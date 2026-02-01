@@ -1,0 +1,764 @@
+/* Reset dasar dan Font */
+* {
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif; /* Font futuristik */
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* --- Latar Belakang Luar Angkasa Biru Tua --- */
+/* Trik CSS untuk membuat bintang tanpa gambar */
+.stars, .twinkling {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    display: block;
+}
+.stars {
+    background: #000 url('http://www.script-tutorials.com/demos/360/images/stars.png') repeat top center;
+    z-index: -2;
+}
+.twinkling {
+    background: transparent url('http://www.script-tutorials.com/demos/360/images/twinkling.png') repeat top center;
+    z-index: -1;
+    animation: move-twink-back 200s linear infinite;
+    opacity: 0.6;
+}
+/* Gradient biru tua di atas bintang */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at center, rgba(10, 25, 60, 0.6) 0%, rgba(0, 5, 20, 0.9) 100%);
+    z-index: -1;
+}
+@keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+
+
+/* --- Layout Utama --- */
+.main-wrapper {
+    text-align: center;
+    z-index: 1;
+}
+
+.brand-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff;
+    letter-spacing: 2px;
+}
+.brand-title .highlight { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+.game-interface {
+    background: rgba(16, 32, 64, 0.8);
+    padding: 25px;
+    border-radius: 20px;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), inset 0 0 20px rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(5px);
+    width: 450px;
+    max-width: 95vw;
+}
+
+/* --- Layar Game --- */
+#game-screen {
+    height: 280px;
+    background: linear-gradient(180deg, #1a2a4a 0%, #0d1a30 100%);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    /* Garis grid futuristik halus */
+    background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+#multiplier {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 15px #fff;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* --- Astronot dan Animasi --- */
+#spaceman-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: bottom 0.1s linear;
+    text-align: center;
+}
+
+#spaceman { font-size: 60px; z-index: 2; position: relative; }
+
+/* Efek Api Roket */
+#thrust {
+    font-size: 30px;
+    margin-top: -15px;
+    animation: burn 0.1s infinite alternate;
+}
+#thrust.hidden { display: none; }
+
+@keyframes burn {
+    from { opacity: 0.8; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1.1); }
+}
+
+/* Efek saat Crash */
+.crashing-screen {
+    animation: shake 0.5s;
+    background: linear-gradient(180deg, #4a1a1a 0%, #300d0d 100%) !important;
+    border-color: #ff3333 !important;
+}
+.exploding-spaceman {
+    animation: spinOut 0.5s forwards;
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    100% { transform: translate(0, 0) rotate(0); }
+}
+@keyframes spinOut {
+    to { transform: translateX(-50%) rotate(360deg) scale(0); opacity: 0; }
+}
+
+
+/* --- Controls --- */
+#status-msg {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    min-height: 1.4em;
+    color: #aaa;
+}
+
+.controls { display: flex; gap: 15px; }
+
+.neon-btn {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.blue-btn {
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+}
+.blue-btn:hover:not(:disabled) { box-shadow: 0 0 30px rgba(0, 198, 255, 0.8); transform: translateY(-2px); }
+
+.red-btn {
+    background: linear-gradient(45deg, #ff0055, #ff5500);
+    box-shadow: 0 0 15px rgba(255, 85, 0, 0.5);
+}
+.red-btn:hover:not(:disabled) { box-shadow: 0 0 30px rgba(255, 85, 0, 0.8); transform: translateY(-2px); }
+
+button:disabled {
+    background: #334;
+    color: #778;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+.wallet-section {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px dashed #ffd700;
+}
+
+.balance-display {
+    font-size: 1.2rem;
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.bet-input-wrapper {
+    margin-bottom: 10px;
+}
+
+.bet-input-wrapper input {
+    background: #1a2a4a;
+    border: 1px solid #00d4ff;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Container Saldo */
+.wallet-container {
+    background: rgba(0, 20, 40, 0.9);
+    border: 1px solid #ffd700;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.balance-box {
+    text-align: left;
+}
+
+.balance-box .label {
+    display: block;
+    font-size: 0.7rem;
+    color: #ffd700;
+}
+
+#balance {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.bet-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 0.6rem;
+    margin-bottom: 3px;
+    color: #00d4ff;
+}
+
+#bet-amount {
+    background: #000;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.deposit-btn {
+    background: #28a745;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.deposit-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+/* Styling Modal */
+.modal {
+    display: none; /* Sembunyi secara default */
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #0d1a30, #162a4a);
+    margin: 10% auto;
+    padding: 30px;
+    border: 2px solid #00d4ff;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    color: white;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.deposit-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.deposit-options button {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid #00d4ff;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.3s;
+}
+
+.deposit-options button:hover {
+    background: #00d4ff;
+    color: black;
+}
+
+.custom-deposit {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+}
+
+.custom-deposit input {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.custom-deposit button {
+    width: 100%;
+    background: #ffd700;
+    color: black;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styling Modal */
+.modal {
+    display: none; /* Sembunyi secara default */
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #0d1a30, #162a4a);
+    margin: 10% auto;
+    padding: 30px;
+    border: 2px solid #00d4ff;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    color: white;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.deposit-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.deposit-options button {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid #00d4ff;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.3s;
+}
+
+.deposit-options button:hover {
+    background: #00d4ff;
+    color: black;
+}
+
+.custom-deposit {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+}
+
+.custom-deposit input {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.custom-deposit button {
+    width: 100%;
+    background: #ffd700;
+    color: black;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Penyesuaian agar input taruhan dan auto stop sejajar */
+.bet-controls {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end; /* Membuat tombol deposit sejajar dengan baris input */
+    flex-wrap: wrap; /* Agar responsif di layar kecil */
+    justify-content: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 0.6rem;
+    margin-bottom: 5px;
+    color: #00d4ff;
+    font-weight: bold;
+}
+
+/* Styling untuk semua input number di area kontrol */
+#bet-amount, #auto-stop {
+    background: #000;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    padding: 8px;
+    border-radius: 5px;
+    width: 90px; /* Ukuran diperkecil sedikit agar muat berjejer */
+    font-family: 'Orbitron', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+#bet-amount:focus, #auto-stop:focus {
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    border-color: #fff;
+}
+
+/* Membedakan warna input Auto Stop sedikit agar user tidak bingung */
+#auto-stop {
+    color: #ffd700;
+    border-color: #ffd700;
+}
+
+/* --- Penyesuaian Container Utama --- */
+.game-interface {
+    background: rgba(16, 32, 64, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #00d4ff;
+    
+    /* Ukuran default untuk PC */
+    width: 480px; 
+    transition: all 0.3s ease-in-out;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+}
+
+/* --- RESPONSIVE UNTUK HP (Layar di bawah 600px) --- */
+@media screen and (max-width: 600px) {
+    .brand-title {
+        font-size: 1.8rem;
+        margin-top: 10px;
+    }
+
+    .game-interface {
+        width: 95vw; /* Menggunakan hampir seluruh lebar layar HP */
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    #game-screen {
+        height: 200px; /* Layar game sedikit lebih pendek di HP */
+    }
+
+    #multiplier {
+        font-size: 2.8rem;
+    }
+
+    #spaceman {
+        font-size: 40px;
+    }
+
+    /* Membuat tombol kontrol lebih besar agar mudah ditekan jari */
+    .neon-btn {
+        padding: 18px; 
+        font-size: 1rem;
+    }
+
+    .input-row {
+        gap: 5px;
+    }
+
+    #bet-amount, #auto-stop {
+        padding: 12px 5px; /* Input lebih tinggi untuk kenyamanan sentuhan */
+        font-size: 0.9rem;
+    }
+
+    .deposit-btn {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* --- PENYESUAIAN KHUSUS PC (Layar Lebar) --- */
+@media screen and (min-width: 1024px) {
+    .game-interface {
+        width: 550px; /* Lebih lebar sedikit di PC agar terlihat gagah */
+    }
+    
+    .neon-btn:hover {
+        filter: brightness(1.2);
+        transform: translateY(-2px);
+    }
+}
+
+/* --- RESET & DASAR --- */
+* { 
+    box-sizing: border-box; 
+    font-family: 'Orbitron', sans-serif; 
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    overflow: hidden; /* Mencegah scroll di PC & HP */
+    color: #fff;
+}
+
+/* --- BACKGROUND ANIMASI --- */
+.stars, .twinkling { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; }
+.stars { background: #000 url('http://www.script-tutorials.com/demos/360/images/stars.png') repeat top center; z-index: -2; }
+.twinkling { 
+    background: transparent url('http://www.script-tutorials.com/demos/360/images/twinkling.png') repeat top center; 
+    z-index: -1; animation: move-twink-back 200s linear infinite; opacity: 0.6; 
+}
+@keyframes move-twink-back { from {background-position:0 0;} to {background-position:-10000px 5000px;} }
+
+/* --- WRAPPER UTAMA --- */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    padding: 10px;
+}
+
+.brand-title {
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+    text-shadow: 0 0 10px #00d4ff;
+}
+
+/* --- INTERFACE GAME (ADAPTIF PC & HP) --- */
+.game-interface {
+    background: rgba(16, 32, 64, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #00d4ff;
+    width: 100%;
+    max-width: 500px; /* Lebar maksimal di PC */
+    max-height: 90vh; /* Tinggi maksimal agar tidak overflow di monitor */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* --- BAGIAN WALLET (ATAS) --- */
+.wallet-container {
+    background: rgba(0, 10, 20, 0.7);
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    border-radius: 15px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.balance-box { text-align: center; margin-bottom: 10px; }
+#balance { font-size: 1.3rem; font-weight: bold; color: #fff; display: block; }
+.label { font-size: 0.65rem; color: #00d4ff; letter-spacing: 1px; }
+
+.input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.input-group { flex: 1; display: flex; flex-direction: column; }
+.input-group label { font-size: 0.6rem; margin-bottom: 3px; color: #aaa; }
+
+#bet-amount, #auto-stop {
+    background: #000; border: 1px solid #00d4ff; color: #00d4ff;
+    padding: 8px; border-radius: 5px; font-family: 'Orbitron'; text-align: center; width: 100%;
+}
+#auto-stop { border-color: #ffd700; color: #ffd700; }
+
+.deposit-btn {
+    width: 100%; padding: 10px; background: #28a745; border: none; color: #fff;
+    border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.75rem;
+}
+
+/* --- LAYAR GAME (TENGAH) --- */
+#game-screen {
+    flex-grow: 1; /* Biar ukurannya fleksibel mengikuti sisa ruang */
+    min-height: 180px; 
+    max-height: 300px;
+    background: linear-gradient(180deg, #1a2a4a 0%, #0d1a30 100%);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+#multiplier {
+    font-size: 3rem;
+    font-weight: 700;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    transition: all 0.2s;
+}
+
+#spaceman-container { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); }
+#spaceman { font-size: 45px; }
+#thrust { font-size: 20px; animation: burn 0.1s infinite alternate; }
+
+/* --- FOOTER KONTROL (BAWAH) --- */
+#status-msg { margin-bottom: 10px; font-size: 0.9rem; min-height: 1.2em; }
+.controls { display: flex; gap: 10px; }
+.neon-btn {
+    flex: 1; padding: 15px; border: none; border-radius: 12px; color: #fff;
+    font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.9rem;
+}
+.blue-btn { background: linear-gradient(45deg, #0072ff, #00c6ff); box-shadow: 0 0 15px rgba(0, 198, 255, 0.4); }
+.red-btn { background: linear-gradient(45deg, #ff0055, #ff5500); box-shadow: 0 0 15px rgba(255, 85, 0, 0.4); }
+
+/* --- RESPONSIVE KHUSUS --- */
+@media screen and (max-width: 480px) {
+    .game-interface { width: 95vw; padding: 12px; }
+    .brand-title { font-size: 1.5rem; }
+    #multiplier { font-size: 2.5rem; }
+    .neon-btn { padding: 18px; } /* Lebih besar untuk jempol */
+}
+
+@media screen and (min-width: 1024px) {
+    .game-interface { width: 450px; } /* Ukuran ideal di monitor PC */
+}
+
+/* Modal & Animasi Gagal tetap sama seperti sebelumnya */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+.modal-content { background: #0d1a30; margin: 10% auto; padding: 25px; border: 2px solid #00d4ff; width: 320px; border-radius: 15px; text-align: center; }
+.crashing-screen { animation: shake 0.5s; background: #300d0d !important; }
+@keyframes shake { 0%, 100% { transform: translate(0,0); } 20% { transform: translate(-5px, 0); } 40% { transform: translate(5px, 0); } }
+
+/* Styling Sakelar Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+    margin-bottom: 4px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid #555;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 10px; width: 10px;
+    left: 2px; bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #ffd700; border-color: #ffd700; }
+input:checked + .slider:before { transform: translateX(14px); }
+
+/* Menghubungkan visual input dengan status aktif */
+#auto-stop {
+    transition: opacity 0.3s;
+}
+#auto-stop:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
